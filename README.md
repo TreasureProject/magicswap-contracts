@@ -1,1 +1,1 @@
-# magicswap-contracts
+# MagicSwap
