@@ -38,9 +38,6 @@ const config: HardhatUserConfig = {
     // except: []
   },
   defaultNetwork: "hardhat",
-  etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
-  },
   gasReporter: {
     coinmarketcap: process.env.COINMARKETCAP_API_KEY,
     currency: "USD",
@@ -97,6 +94,14 @@ const config: HardhatUserConfig = {
         gasMultiplier: 2,
         accounts: devAccounts
     },
+  },
+  etherscan: {
+    apiKey: process.env.ARBIMAINNET_API_KEY
+  },
+  verify: {
+    etherscan: {
+      apiKey: process.env.ARBIMAINNET_API_KEY
+    }
   },
   paths: {
     artifacts: "artifacts",

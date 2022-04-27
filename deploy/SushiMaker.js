@@ -7,27 +7,29 @@ module.exports = async function ({ ethers: { getNamedSigner }, getNamedAccounts,
 
   const chainId = await getChainId()
 
-  const wethAddresses = {
-    421611: "0xEBbc3452Cc911591e4F18f3b36727Df45d6bd1f9",
-  }
+  const magicAddresses = {
+    // arb testnet
+    421611: "0x7B402a341f92d2Ce96da3F87D00B60D552D66cA7",
+  };
+
 
   const factory = await ethers.getContract("UniswapV2Factory")
   const bar = await ethers.getContract("SushiBar")
   const sushi = await ethers.getContract("SushiToken")
   
-  let wethAddress;
+  let addr;
   
   if (chainId === '31337') {
-    wethAddress = (await deployments.get("WETH9Mock")).address
-  } else if (chainId in wethAddresses) {
-    wethAddress = wethAddresses[chainId]
+    addr = (await deployments.get("WETH9Mock")).address
+  } else if (chainId in magicAddresses) {
+    addr = magicAddresses[chainId]
   } else {
-    throw Error("No WETH!")
+    throw Error("No MAGIC!")
   }
 
   await deploy("SushiMaker", {
     from: deployer,
-    args: [factory.address, bar.address, sushi.address, wethAddress],
+    args: [factory.address, bar.address, sushi.address, addr],
     log: true,
     deterministicDeployment: false
   })

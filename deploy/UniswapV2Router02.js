@@ -8,20 +8,19 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
 
   const chainId = await getChainId();
 
-  const wethAddresses = {
-    421611: "0xEBbc3452Cc911591e4F18f3b36727Df45d6bd1f9",
-  }
+  const magicAddresses = {
+    // arb testnet
+    421611: "0x7B402a341f92d2Ce96da3F87D00B60D552D66cA7",
+  };
 
-  let wethAddress;
+  let addr;
 
   if (chainId === "31337") {
-    wethAddress = (await deployments.get("WETH9Mock")).address;
-  } else if (chainId in WNATIVE_ADDRESS) {
-    wethAddress = WNATIVE_ADDRESS[chainId];
-  } else if (wethAddresses[chainId]){
-    wethAddress = wethAddresses[chainId]
+    addr = (await deployments.get("WETH9Mock")).address;
+  } else if (magicAddresses[chainId]){
+    addr = magicAddresses[chainId]
   } else {
-    throw Error("No WNATIVE!");
+    throw Error("No MAGIC!");
   }
 
 
@@ -29,7 +28,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
 
   await deploy("UniswapV2Router02", {
     from: deployer,
-    args: [factoryAddress, wethAddress],
+    args: [factoryAddress, addr],
     gasLimit: 9000000000,
     log: true,
     deterministicDeployment: false,
