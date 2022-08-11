@@ -1,4 +1,3 @@
-const { WNATIVE_ADDRESS } = require("@sushiswap/core-sdk");
 const { hrtime } = require("process");
 
 module.exports = async function ({ getNamedAccounts, deployments }) {
@@ -16,7 +15,14 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   let addr;
 
   if (chainId === "31337") {
-    addr = (await deployments.get("WETH9Mock")).address;
+    let mock = await deployments.getOrNull("WETH9Mock");
+    if(mock === undefined) {
+      mock = await deploy("WETH9Mock",{
+        from: deployer,
+        log: true,
+      });
+    }
+    addr = mock.address;
   } else if (magicAddresses[chainId]){
     addr = magicAddresses[chainId]
   } else {
@@ -29,11 +35,11 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   await deploy("UniswapV2Router02", {
     from: deployer,
     args: [factoryAddress, addr],
-    gasLimit: 9000000000,
+    gasLimit: 30000000,
     log: true,
     deterministicDeployment: false,
   });
 };
 
 module.exports.tags = ["UniswapV2Router02", "AMM"];
-module.exports.dependencies = ["UniswapV2Factory", "Mocks"];
+module.exports.dependencies = ["UniswapV2Factory"];

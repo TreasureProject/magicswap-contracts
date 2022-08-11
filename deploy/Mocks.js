@@ -13,6 +13,16 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log: true,
   })
 
+  await deploy("MedalsMock", {
+    from: deployer,
+    log: true,
+  })
+
+  await deploy("ELM", {
+    from: deployer,
+    log: true,
+  })
+
   await deploy("WethMock", {
     from: deployer,
     log: true,
@@ -29,4 +39,4 @@ module.exports.skip = ({ getChainId }) =>
     }
   })
 
-module.exports.tags = ["test"]
+module.exports.tags = ["Mocks"]

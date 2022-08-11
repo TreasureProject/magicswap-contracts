@@ -14,7 +14,6 @@ import {
   Contract,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   CallOverrides,
 } from "@ethersproject/contracts";
 import { BytesLike } from "@ethersproject/bytes";
@@ -25,7 +24,6 @@ interface IUniswapV2Router01Interface extends ethers.utils.Interface {
   functions: {
     "WETH()": FunctionFragment;
     "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)": FunctionFragment;
-    "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
     "factory()": FunctionFragment;
     "getAmountIn(uint256,uint256,uint256)": FunctionFragment;
     "getAmountOut(uint256,uint256,uint256)": FunctionFragment;
@@ -36,8 +34,6 @@ interface IUniswapV2Router01Interface extends ethers.utils.Interface {
     "removeLiquidityETH(address,uint256,uint256,uint256,address,uint256)": FunctionFragment;
     "removeLiquidityETHWithPermit(address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
     "removeLiquidityWithPermit(address,address,uint256,uint256,uint256,address,uint256,bool,uint8,bytes32,bytes32)": FunctionFragment;
-    "swapETHForExactTokens(uint256,address[],address,uint256)": FunctionFragment;
-    "swapExactETHForTokens(uint256,address[],address,uint256)": FunctionFragment;
     "swapExactTokensForETH(uint256,uint256,address[],address,uint256)": FunctionFragment;
     "swapExactTokensForTokens(uint256,uint256,address[],address,uint256)": FunctionFragment;
     "swapTokensForExactETH(uint256,uint256,address[],address,uint256)": FunctionFragment;
@@ -51,17 +47,6 @@ interface IUniswapV2Router01Interface extends ethers.utils.Interface {
       string,
       string,
       BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      string,
-      BigNumberish
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "addLiquidityETH",
-    values: [
-      string,
       BigNumberish,
       BigNumberish,
       BigNumberish,
@@ -145,14 +130,6 @@ interface IUniswapV2Router01Interface extends ethers.utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "swapETHForExactTokens",
-    values: [BigNumberish, string[], string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "swapExactETHForTokens",
-    values: [BigNumberish, string[], string, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "swapExactTokensForETH",
     values: [BigNumberish, BigNumberish, string[], string, BigNumberish]
   ): string;
@@ -172,10 +149,6 @@ interface IUniswapV2Router01Interface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "WETH", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "addLiquidity",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "addLiquidityETH",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "factory", data: BytesLike): Result;
@@ -210,14 +183,6 @@ interface IUniswapV2Router01Interface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "removeLiquidityWithPermit",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "swapETHForExactTokens",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "swapExactETHForTokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -280,26 +245,6 @@ export class IUniswapV2Router01 extends Contract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    addLiquidityETH(
-      token: string,
-      amountTokenDesired: BigNumberish,
-      amountTokenMin: BigNumberish,
-      amountETHMin: BigNumberish,
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<ContractTransaction>;
-
-    "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)"(
-      token: string,
-      amountTokenDesired: BigNumberish,
-      amountTokenMin: BigNumberish,
-      amountETHMin: BigNumberish,
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
     ): Promise<ContractTransaction>;
 
     factory(overrides?: CallOverrides): Promise<[string]>;
@@ -472,38 +417,6 @@ export class IUniswapV2Router01 extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    swapETHForExactTokens(
-      amountOut: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<ContractTransaction>;
-
-    "swapETHForExactTokens(uint256,address[],address,uint256)"(
-      amountOut: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<ContractTransaction>;
-
-    swapExactETHForTokens(
-      amountOutMin: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<ContractTransaction>;
-
-    "swapExactETHForTokens(uint256,address[],address,uint256)"(
-      amountOutMin: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<ContractTransaction>;
-
     swapExactTokensForETH(
       amountIn: BigNumberish,
       amountOutMin: BigNumberish,
@@ -603,26 +516,6 @@ export class IUniswapV2Router01 extends Contract {
     to: string,
     deadline: BigNumberish,
     overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  addLiquidityETH(
-    token: string,
-    amountTokenDesired: BigNumberish,
-    amountTokenMin: BigNumberish,
-    amountETHMin: BigNumberish,
-    to: string,
-    deadline: BigNumberish,
-    overrides?: PayableOverrides
-  ): Promise<ContractTransaction>;
-
-  "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)"(
-    token: string,
-    amountTokenDesired: BigNumberish,
-    amountTokenMin: BigNumberish,
-    amountETHMin: BigNumberish,
-    to: string,
-    deadline: BigNumberish,
-    overrides?: PayableOverrides
   ): Promise<ContractTransaction>;
 
   factory(overrides?: CallOverrides): Promise<string>;
@@ -795,38 +688,6 @@ export class IUniswapV2Router01 extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  swapETHForExactTokens(
-    amountOut: BigNumberish,
-    path: string[],
-    to: string,
-    deadline: BigNumberish,
-    overrides?: PayableOverrides
-  ): Promise<ContractTransaction>;
-
-  "swapETHForExactTokens(uint256,address[],address,uint256)"(
-    amountOut: BigNumberish,
-    path: string[],
-    to: string,
-    deadline: BigNumberish,
-    overrides?: PayableOverrides
-  ): Promise<ContractTransaction>;
-
-  swapExactETHForTokens(
-    amountOutMin: BigNumberish,
-    path: string[],
-    to: string,
-    deadline: BigNumberish,
-    overrides?: PayableOverrides
-  ): Promise<ContractTransaction>;
-
-  "swapExactETHForTokens(uint256,address[],address,uint256)"(
-    amountOutMin: BigNumberish,
-    path: string[],
-    to: string,
-    deadline: BigNumberish,
-    overrides?: PayableOverrides
-  ): Promise<ContractTransaction>;
-
   swapExactTokensForETH(
     amountIn: BigNumberish,
     amountOutMin: BigNumberish,
@@ -936,38 +797,6 @@ export class IUniswapV2Router01 extends Contract {
       [BigNumber, BigNumber, BigNumber] & {
         amountA: BigNumber;
         amountB: BigNumber;
-        liquidity: BigNumber;
-      }
-    >;
-
-    addLiquidityETH(
-      token: string,
-      amountTokenDesired: BigNumberish,
-      amountTokenMin: BigNumberish,
-      amountETHMin: BigNumberish,
-      to: string,
-      deadline: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber] & {
-        amountToken: BigNumber;
-        amountETH: BigNumber;
-        liquidity: BigNumber;
-      }
-    >;
-
-    "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)"(
-      token: string,
-      amountTokenDesired: BigNumberish,
-      amountTokenMin: BigNumberish,
-      amountETHMin: BigNumberish,
-      to: string,
-      deadline: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber] & {
-        amountToken: BigNumber;
-        amountETH: BigNumber;
         liquidity: BigNumber;
       }
     >;
@@ -1158,38 +987,6 @@ export class IUniswapV2Router01 extends Contract {
       [BigNumber, BigNumber] & { amountA: BigNumber; amountB: BigNumber }
     >;
 
-    swapETHForExactTokens(
-      amountOut: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
-    "swapETHForExactTokens(uint256,address[],address,uint256)"(
-      amountOut: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
-    swapExactETHForTokens(
-      amountOutMin: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
-    "swapExactETHForTokens(uint256,address[],address,uint256)"(
-      amountOutMin: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
     swapExactTokensForETH(
       amountIn: BigNumberish,
       amountOutMin: BigNumberish,
@@ -1292,26 +1089,6 @@ export class IUniswapV2Router01 extends Contract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    addLiquidityETH(
-      token: string,
-      amountTokenDesired: BigNumberish,
-      amountTokenMin: BigNumberish,
-      amountETHMin: BigNumberish,
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<BigNumber>;
-
-    "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)"(
-      token: string,
-      amountTokenDesired: BigNumberish,
-      amountTokenMin: BigNumberish,
-      amountETHMin: BigNumberish,
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
     ): Promise<BigNumber>;
 
     factory(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1484,38 +1261,6 @@ export class IUniswapV2Router01 extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    swapETHForExactTokens(
-      amountOut: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<BigNumber>;
-
-    "swapETHForExactTokens(uint256,address[],address,uint256)"(
-      amountOut: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<BigNumber>;
-
-    swapExactETHForTokens(
-      amountOutMin: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<BigNumber>;
-
-    "swapExactETHForTokens(uint256,address[],address,uint256)"(
-      amountOutMin: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<BigNumber>;
-
     swapExactTokensForETH(
       amountIn: BigNumberish,
       amountOutMin: BigNumberish,
@@ -1616,26 +1361,6 @@ export class IUniswapV2Router01 extends Contract {
       to: string,
       deadline: BigNumberish,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    addLiquidityETH(
-      token: string,
-      amountTokenDesired: BigNumberish,
-      amountTokenMin: BigNumberish,
-      amountETHMin: BigNumberish,
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)"(
-      token: string,
-      amountTokenDesired: BigNumberish,
-      amountTokenMin: BigNumberish,
-      amountETHMin: BigNumberish,
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>;
 
     factory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1806,38 +1531,6 @@ export class IUniswapV2Router01 extends Contract {
       r: BytesLike,
       s: BytesLike,
       overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    swapETHForExactTokens(
-      amountOut: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "swapETHForExactTokens(uint256,address[],address,uint256)"(
-      amountOut: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<PopulatedTransaction>;
-
-    swapExactETHForTokens(
-      amountOutMin: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "swapExactETHForTokens(uint256,address[],address,uint256)"(
-      amountOutMin: BigNumberish,
-      path: string[],
-      to: string,
-      deadline: BigNumberish,
-      overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>;
 
     swapExactTokensForETH(
