@@ -10,6 +10,8 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   const magicAddresses = {
     // arb testnet
     421611: "0x7B402a341f92d2Ce96da3F87D00B60D552D66cA7",
+    // arb one
+    42161: "0x539bdE0d7Dbd336b79148AA742883198BBF60342"
   };
 
   let addr;
@@ -35,7 +37,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
   await deploy("UniswapV2Router02", {
     from: deployer,
     args: [factoryAddress, addr],
-    gasLimit: 30000000,
+    gasLimit: 90000000,
     log: true,
     deterministicDeployment: false,
   });
