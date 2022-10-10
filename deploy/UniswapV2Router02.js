@@ -16,10 +16,11 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
 
   let addr;
 
-  if (chainId === "31337") {
-    let mock = await deployments.getOrNull("WETH9Mock");
+  // 421613 is Arbitrum Goerli
+  if (chainId === "31337" || chainId === "421613") {
+    let mock = await deployments.getOrNull("MagicMock");
     if(mock === undefined) {
-      mock = await deploy("WETH9Mock",{
+      mock = await deploy("MagicMock",{
         from: deployer,
         log: true,
       });

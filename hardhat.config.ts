@@ -25,7 +25,7 @@ const accounts = {
 const priAccount = process.env.PRIVATE_KEY;
 const devAccount = process.env.DEV_KEY;
 const devAccounts = [
-  priAccount,devAccount
+  priAccount!,devAccount!
 ]
 
 const config: HardhatUserConfig = {
@@ -93,9 +93,28 @@ const config: HardhatUserConfig = {
         gasMultiplier: 2,
         accounts: devAccounts
     },
+    arbitrumGoerli: {
+      url: process.env.ARBITRUM_GOERLI_URL || "",
+      accounts:
+            process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      chainId: 421613,
+      live: false,
+      saveDeployments: true,
+      gasMultiplier: 2,
+    }
   },
   etherscan: {
-    apiKey: process.env.ARBIMAINNET_API_KEY
+    apiKey: process.env.ARBIMAINNET_API_KEY,
+    customChains: [
+      {
+          network: 'arbitrumGoerli',
+          chainId: 421613,
+          urls: {
+              apiURL: 'https://goerli-rollup-explorer.arbitrum.io/api?module=contract&action=verifysourcecode',
+              browserURL: 'https://goerli-rollup-explorer.arbitrum.io',
+          },
+      },
+    ],
   },
   verify: {
     etherscan: {
