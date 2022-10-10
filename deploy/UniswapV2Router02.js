@@ -11,13 +11,14 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     // arb testnet
     421611: "0x7B402a341f92d2Ce96da3F87D00B60D552D66cA7",
     // arb one
-    42161: "0x539bdE0d7Dbd336b79148AA742883198BBF60342"
+    42161: "0x539bdE0d7Dbd336b79148AA742883198BBF60342",
+    421613: "0x88f9eFB3A7F728fdb2B8872fE994c84b1d148f65",
   };
 
   let addr;
 
   // 421613 is Arbitrum Goerli
-  if (chainId === "31337" || chainId === "421613") {
+  if (chainId === "31337") {
     let mock = await deployments.getOrNull("MagicMock");
     if(mock === undefined) {
       mock = await deploy("MagicMock",{
