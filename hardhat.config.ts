@@ -17,13 +17,18 @@ import "solidity-coverage"
 import { HardhatUserConfig } from "hardhat/types"
 import { removeConsoleLog } from "hardhat-preprocessor"
 
+import "./hardhat-extra"
+
 const accounts = {
   mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
   // accountsBalance: "990000000000000000000",
 }
 
-const priAccount = process.env.PRIVATE_KEY;
-const devAccount = process.env.DEV_KEY;
+// KMS signer used for production deployments.
+const kmsKeyId = "arn:aws:kms:us-west-2:665230337498:key/mrk-a9779aa79c2646429ded5dc3431054ba";
+
+const priAccount = process.env.PRIVATE_KEY ?? null;
+const devAccount = process.env.DEV_KEY ?? null;
 const devAccounts = [
   priAccount!,devAccount!
 ]
@@ -72,7 +77,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       forking: {
         enabled: process.env.FORKING === "true",
-        url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
+        url: process.env.ARBITRUM_MAINNET_URL || "",
       },
       live: false,
       saveDeployments: true,
@@ -83,7 +88,8 @@ const config: HardhatUserConfig = {
         timeout: 120000,
         live: true,
         saveDeployments: true,
-        accounts: devAccounts,
+        // accounts: devAccounts,
+        kmsKeyId,
     },
     arbitrummainnet: {
         url: process.env.ARBITRUM_MAINNET_URL || "",
@@ -91,7 +97,8 @@ const config: HardhatUserConfig = {
         live: true,
         saveDeployments: true,
         gasMultiplier: 2,
-        accounts: devAccounts
+        // accounts: devAccounts,
+        kmsKeyId,
     },
     arbitrumGoerli: {
       url: process.env.ARBITRUM_GOERLI_URL || "",
