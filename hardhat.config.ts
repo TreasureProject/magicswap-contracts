@@ -129,6 +129,14 @@ const config: HardhatUserConfig = {
               browserURL: 'https://goerli-rollup-explorer.arbitrum.io',
           },
       },
+      {
+          network: 'arbitrumsepolia',
+          chainId: 421614,
+          urls: {
+              apiURL: 'https://api-sepolia.arbiscan.io/api',
+              browserURL: 'https://sepolia.arbiscan.io',
+          },
+      },
     ],
   },
   verify: {
