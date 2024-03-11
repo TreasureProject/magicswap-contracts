@@ -91,6 +91,14 @@ const config: HardhatUserConfig = {
         // accounts: devAccounts,
         kmsKeyId,
     },
+    arbitrumsepolia: {
+        url: process.env.ARBITRUM_SEPOLIA_URL || "",
+        timeout: 120000,
+        live: true,
+        saveDeployments: true,
+        // accounts: devAccounts,
+        kmsKeyId,
+    },
     arbitrummainnet: {
         url: process.env.ARBITRUM_MAINNET_URL || "",
         timeout: 120000,
@@ -179,8 +187,8 @@ const config: HardhatUserConfig = {
       tasks: ["compile"],
       files: ["./contracts"],
       verbose: true,
-    },
-  },
+            },
+      },
 }
 
 export default config
