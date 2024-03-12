@@ -24,8 +24,11 @@ const accounts = {
   // accountsBalance: "990000000000000000000",
 }
 
-// KMS signer used for production deployments.
-const kmsKeyId = "arn:aws:kms:us-west-2:665230337498:key/mrk-a9779aa79c2646429ded5dc3431054ba";
+// KMS signer used for production deployments: 0x39c6bf2f2360e993a5ed8e1a30edc01001af64f3
+const prodKmsKey = "arn:aws:kms:us-east-1:884078395586:key/mrk-58392046945f4fd3a273d6fee98cf9c8";
+
+// KMS signer used for dev deployments: 0x80b756c9ce65d5a2c2922d4cf778cd2fb2e6fa24
+const devKmsKey = "arn:aws:kms:us-west-2:665230337498:key/mrk-a9779aa79c2646429ded5dc3431054ba";
 
 const priAccount = process.env.PRIVATE_KEY ?? null;
 const devAccount = process.env.DEV_KEY ?? null;
@@ -83,21 +86,12 @@ const config: HardhatUserConfig = {
       saveDeployments: true,
       tags: ["test", "local"],
     },
-    arbitrumtestnet: {
-        url: process.env.ARBITRUM_TESTNET_URL || "",
-        timeout: 120000,
-        live: true,
-        saveDeployments: true,
-        // accounts: devAccounts,
-        kmsKeyId,
-    },
     arbitrumsepolia: {
         url: process.env.ARBITRUM_SEPOLIA_URL || "",
         timeout: 120000,
         live: true,
         saveDeployments: true,
-        // accounts: devAccounts,
-        kmsKeyId,
+        kmsKeyId: devKmsKey,
     },
     arbitrummainnet: {
         url: process.env.ARBITRUM_MAINNET_URL || "",
@@ -105,18 +99,8 @@ const config: HardhatUserConfig = {
         live: true,
         saveDeployments: true,
         gasMultiplier: 2,
-        // accounts: devAccounts,
-        kmsKeyId,
+        kmsKeyId: prodKmsKey,
     },
-    arbitrumGoerli: {
-      url: process.env.ARBITRUM_GOERLI_URL || "",
-      accounts:
-            process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-      chainId: 421613,
-      live: false,
-      saveDeployments: true,
-      gasMultiplier: 2,
-    }
   },
   etherscan: {
     apiKey: process.env.ARBIMAINNET_API_KEY,
