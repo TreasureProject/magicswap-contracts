@@ -27,7 +27,7 @@
     // Custom configs.
     "typeRoots": ["./node_modules/@types"]
   },
-  "exclude": ["nod_modules"],
+  "exclude": ["node_modules"],
   "include": ["hardhat.config.ts", "scripts/", "deploy/", "tasks/", "test/", "typechain/", "typechain-types/"],
   "ts-node": {
       "swc": true
